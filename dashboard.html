@@ -1,0 +1,54 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css" />
+  <title>Dashboard</title>
+</head>
+<body>
+  <div class="container">
+    <div class="forms-container">
+      <div class="signin-signup">
+        <div class="sign-in-form" style="text-align: center;">
+          <h2 class="title">¡Bienvenido al Dashboard!</h2>
+          <p class="social-text" id="user-info">Cargando usuario...</p>
+          <a href="/logout" class="btn solid">Cerrar sesión</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panels-container">
+      <div class="panel left-panel">
+        <div class="content">
+          <h3>¡Hola!</h3>
+          <p>Estás dentro del sistema protegido. Aquí podrías mostrar estadísticas, accesos o lo que quieras.</p>
+        </div>
+        <img src="img/log.svg" class="image" alt="" />
+      </div>
+      <div class="panel right-panel">
+        <div class="content">
+          <h3>¿Quieres salir?</h3>
+          <p>Recuerda cerrar tu sesión cuando termines de usar el sistema.</p>
+          <a href="/logout" class="btn transparent" id="sign-out-btn">Cerrar sesión</a>
+        </div>
+        <img src="img/register.svg" class="image" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Este script obtiene el usuario desde el servidor y lo muestra
+    fetch('/api/user')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('user-info').innerText = `Hola, ${data.usuario}`;
+      })
+      .catch(err => {
+        document.getElementById('user-info').innerText = 'Usuario no identificado';
+      });
+  </script>
+</body>
+</html>
