@@ -2,10 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
-const loginRoutes = require('./api/login.js');
+const loginRoutes = require('./api/login');  // no necesitas .js aquí
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -17,27 +17,27 @@ app.use(session({
 
 app.use(express.static(__dirname));
 
-app.use('/api/login.js', loginRoutes);
+app.use('/api/login', loginRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/api/user', (req, res) => {
-    if (req.session.user) {
-      return res.json({ usuario: req.session.user.usuario });
-    } else {
-      return res.status(401).json({ error: 'No autorizado' });
-    }
-  });
+  if (req.session.user) {
+    return res.json({ usuario: req.session.user.usuario });
+  } else {
+    return res.status(401).json({ error: 'No autorizado' });
+  }
+});
 
-app.get("/dashboard.html", (req, res) => {
-    if (req.session.user) {
-      res.sendFile(path.join(__dirname, "dashboard.html"));
-    } else {
-      res.redirect("/");  // Si no está logueado, lo redirige al login
-    }
-  });  
+app.get('/dashboard.html', (req, res) => {
+  if (req.session.user) {
+    return res.sendFile(path.join(__dirname, 'dashboard.html'));
+  } else {
+    return res.redirect('/');
+  }
+});
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
@@ -45,5 +45,5 @@ app.get('/logout', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
+  });
